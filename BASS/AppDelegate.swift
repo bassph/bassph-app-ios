@@ -7,10 +7,12 @@
 //
 
 import UIKit
+import RxSwift
+import RxAlamofire
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
+    
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
@@ -36,26 +38,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
         
     }
-    
-    // http://stackoverflow.com/a/41170417
-    func getSignalStrength() -> Int {
-        let application = UIApplication.shared
-        let statusBarView = application.value(forKey: "statusBar") as! UIView
-        let foregroundView = statusBarView.value(forKey: "foregroundView") as! UIView
-        let foregroundViewSubviews = foregroundView.subviews
-        
-        var dataNetworkItemView: UIView!
-        for subview in foregroundViewSubviews {
-            if subview.isKind(of: NSClassFromString("UIStatusBarSignalStrengthItemView")!) {
-                dataNetworkItemView = subview
-                break
-            } else {
-                return 0 //NO SERVICE
-            }
-        }
-        
-        return dataNetworkItemView.value(forKey: "signalStrengthBars") as! Int
-    }
 
+}
+
+extension UIViewController {
+    
+    var app: AppDelegate {
+        get {
+            return UIApplication.shared.delegate as! AppDelegate
+        }
+    }
+    
 }
 

@@ -4,7 +4,32 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>Alamofire.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>AlamofireSwiftyJSON.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Dollar.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-BASS.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>ReachabilitySwift.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>RxAlamofire.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -27,22 +52,47 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>877BBF4B1EDADB41C5B386315EEB8187</key>
+		<key>1BCB85F03686ADB282AD75977E073C43</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>98D32962395C25F82C04644B81AC9D2A</key>
+		<key>2C792BD08C4FA0A11E1B05A76CD9C23B</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>CEBE138291878537351A2734DF95DD08</key>
+		<key>3102621A1F7F34859451E3715CB04794</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>E833C2ACD4F067CABA5DCC3FC541B456</key>
+		<key>61E5C1379DC63FAC57AF48F891CFB123</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>7CFC67812CA6A8788226D7957D8D6F6A</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>88E9EC28B8B46C3631E6B242B50F4442</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>977004231D12E8D7F7A0AB6346D27331</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C68748E71A3DDB40B0AAF4BC0A8F9030</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>DF940F6C465C578DC5E8EACB1F7055D9</key>
 		<dict>
 			<key>primary</key>
 			<true/>

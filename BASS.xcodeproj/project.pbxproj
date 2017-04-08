@@ -12,6 +12,9 @@
 		491937BE1E9360E5008E7CC0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 491937BC1E9360E5008E7CC0 /* Main.storyboard */; };
 		491937C01E9360E5008E7CC0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 491937BF1E9360E5008E7CC0 /* Assets.xcassets */; };
 		491937C31E9360E5008E7CC0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 491937C11E9360E5008E7CC0 /* LaunchScreen.storyboard */; };
+		491FE1EB1E97597200BF7ACF /* NetworkHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491FE1EA1E97597200BF7ACF /* NetworkHandler.swift */; };
+		491FE1EE1E97859200BF7ACF /* CellularHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491FE1ED1E97859200BF7ACF /* CellularHandler.swift */; };
+		49A48B441E9877BC003829F7 /* BandwidthTestHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A48B431E9877BC003829F7 /* BandwidthTestHandler.swift */; };
 		49CDB6A71E938FCA008AE47E /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49CDB6A61E938FCA008AE47E /* CoreTelephony.framework */; };
 		F08D1A21A3736AD433ADC747 /* Pods_BASS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5513BA6E18E4887DAD044DF4 /* Pods_BASS.framework */; };
 /* End PBXBuildFile section */
@@ -25,6 +28,10 @@
 		491937BF1E9360E5008E7CC0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		491937C21E9360E5008E7CC0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		491937C41E9360E5008E7CC0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		491FE1EA1E97597200BF7ACF /* NetworkHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkHandler.swift; sourceTree = "<group>"; };
+		491FE1EC1E975A3200BF7ACF /* BASS-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BASS-Bridging-Header.h"; sourceTree = "<group>"; };
+		491FE1ED1E97859200BF7ACF /* CellularHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CellularHandler.swift; sourceTree = "<group>"; };
+		49A48B431E9877BC003829F7 /* BandwidthTestHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BandwidthTestHandler.swift; sourceTree = "<group>"; };
 		49CDB6A61E938FCA008AE47E /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		5513BA6E18E4887DAD044DF4 /* Pods_BASS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BASS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5F64CC6ECE965061193FE675 /* Pods-BASS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BASS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BASS/Pods-BASS.debug.xcconfig"; sourceTree = "<group>"; };
@@ -74,11 +81,15 @@
 			isa = PBXGroup;
 			children = (
 				491937B81E9360E5008E7CC0 /* AppDelegate.swift */,
+				491FE1ED1E97859200BF7ACF /* CellularHandler.swift */,
+				491FE1EA1E97597200BF7ACF /* NetworkHandler.swift */,
+				49A48B431E9877BC003829F7 /* BandwidthTestHandler.swift */,
 				491937BA1E9360E5008E7CC0 /* MainViewController.swift */,
 				491937BC1E9360E5008E7CC0 /* Main.storyboard */,
 				491937BF1E9360E5008E7CC0 /* Assets.xcassets */,
 				491937C11E9360E5008E7CC0 /* LaunchScreen.storyboard */,
 				491937C41E9360E5008E7CC0 /* Info.plist */,
+				491FE1EC1E975A3200BF7ACF /* BASS-Bridging-Header.h */,
 			);
 			path = BASS;
 			sourceTree = "<group>";
@@ -131,7 +142,7 @@
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
-								enabled = 1;
+								enabled = 0;
 							};
 						};
 					};
@@ -181,7 +192,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		A47F2B7D1B7E0E6A36DB300E /* [CP] Embed Pods Frameworks */ = {
@@ -221,8 +232,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				49A48B441E9877BC003829F7 /* BandwidthTestHandler.swift in Sources */,
 				491937BB1E9360E5008E7CC0 /* MainViewController.swift in Sources */,
 				491937B91E9360E5008E7CC0 /* AppDelegate.swift in Sources */,
+				491FE1EE1E97859200BF7ACF /* CellularHandler.swift in Sources */,
+				491FE1EB1E97597200BF7ACF /* NetworkHandler.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -352,6 +366,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.collave.workbench.BASS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "BASS/BASS-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -367,6 +382,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.collave.workbench.BASS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "BASS/BASS-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
