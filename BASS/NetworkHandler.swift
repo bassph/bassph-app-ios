@@ -5,11 +5,13 @@
 //  Created by Andrew on 07/04/2017.
 //  Copyright © 2017 Collave. All rights reserved.
 //
+
 import Foundation
 import Dollar
 import RxSwift
 import ReachabilitySwift
 import CoreTelephony
+import SystemConfiguration.CaptiveNetwork
 
 struct NetworkMeasurement {
     var bytesReceived: UInt64 = 0
@@ -163,16 +165,17 @@ class NetworkHandler {
                                     bytesSent: networkData.pointee.ifi_obytes)
     }
     
-    class func printCarrier() {
+    class func getCarrierDetails() -> [String: String] {
+        var details = [String: String]()
         let info = CTTelephonyNetworkInfo()
         if let carrier = info.subscriberCellularProvider {
-            // Get carrier name
-            print("Carrier VOIP: ", carrier.allowsVOIP)
-            print("Carrier Name: ", carrier.carrierName ?? "")
-            print("Carrier ICC: ", carrier.isoCountryCode ?? "")
-            print("Carrier MCC: ", carrier.mobileCountryCode ?? "")
-            print("Carrier MNC: ", carrier.mobileNetworkCode ?? "")
+            details["voip"] = carrier.allowsVOIP.description
+            details["name"] = carrier.carrierName ?? ""
+            details["icc"] = carrier.isoCountryCode ?? ""
+            details["mcc"] = carrier.mobileCountryCode ?? ""
+            details["mnc"] = carrier.mobileNetworkCode ?? ""
         }
+        return details
     }
     
     // http://stackoverflow.com/a/41170417
@@ -196,30 +199,55 @@ class NetworkHandler {
     }
     
     class func getRadioAccessTechnology() -> String {
+        let networkInfo = CTTelephonyNetworkInfo()
+        let carrierType = networkInfo.currentRadioAccessTechnology
+        switch carrierType {
+        case CTRadioAccessTechnologyGPRS?,
+             CTRadioAccessTechnologyEdge?: return "GSM"
+        case CTRadioAccessTechnologyCDMA1x?: return "CDMA"
+        case CTRadioAccessTechnologyWCDMA?,
+             CTRadioAccessTechnologyHSDPA?,
+             CTRadioAccessTechnologyHSUPA?,
+             CTRadioAccessTechnologyCDMAEVDORev0?,
+             CTRadioAccessTechnologyCDMAEVDORevA?,
+             CTRadioAccessTechnologyCDMAEVDORevB?,
+             CTRadioAccessTechnologyeHRPD?: return "WCDMA"
+        case CTRadioAccessTechnologyLTE?: return "LTE"
+        default: return ""
+        }
+    }
+    
+    class func getConnectivity() -> String {
         if let reachability = Reachability() {
             switch reachability.currentReachabilityStatus {
             case .reachableViaWiFi: return "WIFI"
             case .reachableViaWWAN:
-                let networkInfo = CTTelephonyNetworkInfo()
-                let carrierType = networkInfo.currentRadioAccessTechnology
-                switch carrierType {
-                case CTRadioAccessTechnologyGPRS?,
-                     CTRadioAccessTechnologyEdge?,
-                     CTRadioAccessTechnologyCDMA1x?: return "2G"
-                case CTRadioAccessTechnologyWCDMA?,
-                     CTRadioAccessTechnologyHSDPA?,
-                     CTRadioAccessTechnologyHSUPA?,
-                     CTRadioAccessTechnologyCDMAEVDORev0?,
-                     CTRadioAccessTechnologyCDMAEVDORevA?,
-                     CTRadioAccessTechnologyCDMAEVDORevB?,
-                     CTRadioAccessTechnologyeHRPD?: return "3G"
-                case CTRadioAccessTechnologyLTE?: return "4G"
+                switch getRadioAccessTechnology() {
+                case "GSM", "CDMA": return "2G"
+                case "WCDMA": return "3G"
+                case "LTE": return "4G"
                 default: return ""
                 }
             default: return ""
             }
         }
         return ""
+    }
+
+    class func getWifiSSID() -> String? {
+        var currentSSID: String? = nil
+        if let interfaces = CNCopySupportedInterfaces() {
+            for i in 0..<CFArrayGetCount(interfaces) {
+                let interfaceName: UnsafeRawPointer = CFArrayGetValueAtIndex(interfaces, i)
+                let rec = unsafeBitCast(interfaceName, to: AnyObject.self)
+                let unsafeInterfaceData = CNCopyCurrentNetworkInfo("\(rec)" as CFString)
+                if unsafeInterfaceData != nil {
+                    let interfaceData = unsafeInterfaceData! as Dictionary!
+                    currentSSID = interfaceData?["SSID" as CFString] as? String
+                }
+            }
+        }
+        return currentSSID
     }
     
 }

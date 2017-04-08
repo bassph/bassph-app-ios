@@ -9,5 +9,6 @@ target 'BASS' do
   pod 'SwiftyJSON', '~> 3'
   pod 'Alamofire', '~> 4'
   pod 'RxAlamofire'
+  pod 'RxCocoa'
   pod 'AlamofireSwiftyJSON'
 end
