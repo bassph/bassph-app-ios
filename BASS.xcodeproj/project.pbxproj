@@ -16,6 +16,9 @@
 		49A48B441E9877BC003829F7 /* BandwidthTestHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A48B431E9877BC003829F7 /* BandwidthTestHandler.swift */; };
 		49A48B461E989ED0003829F7 /* PhoneModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A48B451E989ED0003829F7 /* PhoneModel.swift */; };
 		49CDB6A71E938FCA008AE47E /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49CDB6A61E938FCA008AE47E /* CoreTelephony.framework */; };
+		49E487F21E9DDD28004AC735 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E487F11E9DDD28004AC735 /* UIColor.swift */; };
+		49E487F41E9DE922004AC735 /* PulseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E487F31E9DE922004AC735 /* PulseView.swift */; };
+		49E487F61E9DF073004AC735 /* CGRect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E487F51E9DF073004AC735 /* CGRect.swift */; };
 		49FD54C01E98AAA200615796 /* GeolocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FD54BF1E98AAA200615796 /* GeolocationService.swift */; };
 		49FD54C61E98ADAE00615796 /* RxCLLocationManagerDelegateProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FD54C51E98ADAE00615796 /* RxCLLocationManagerDelegateProxy.swift */; };
 		49FD54C91E98ADD100615796 /* CLLocationManager+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FD54C81E98ADD100615796 /* CLLocationManager+Rx.swift */; };
@@ -36,6 +39,9 @@
 		49A48B431E9877BC003829F7 /* BandwidthTestHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BandwidthTestHandler.swift; sourceTree = "<group>"; };
 		49A48B451E989ED0003829F7 /* PhoneModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhoneModel.swift; sourceTree = "<group>"; };
 		49CDB6A61E938FCA008AE47E /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		49E487F11E9DDD28004AC735 /* UIColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
+		49E487F31E9DE922004AC735 /* PulseView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PulseView.swift; sourceTree = "<group>"; };
+		49E487F51E9DF073004AC735 /* CGRect.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGRect.swift; sourceTree = "<group>"; };
 		49FD54BF1E98AAA200615796 /* GeolocationService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeolocationService.swift; sourceTree = "<group>"; };
 		49FD54C51E98ADAE00615796 /* RxCLLocationManagerDelegateProxy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RxCLLocationManagerDelegateProxy.swift; sourceTree = "<group>"; };
 		49FD54C81E98ADD100615796 /* CLLocationManager+Rx.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CLLocationManager+Rx.swift"; sourceTree = "<group>"; };
@@ -96,15 +102,26 @@
 			path = BASS;
 			sourceTree = "<group>";
 		};
+		49E487F01E9DDD1D004AC735 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				49E487F11E9DDD28004AC735 /* UIColor.swift */,
+				49E487F51E9DF073004AC735 /* CGRect.swift */,
+			);
+			name = Extensions;
+			sourceTree = "<group>";
+		};
 		49FD54C21E98AB1800615796 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				49E487F01E9DDD1D004AC735 /* Extensions */,
 				49FD54C71E98ADC100615796 /* Rx */,
 				49FD54C31E98AB2100615796 /* ViewControllers */,
 				491937B81E9360E5008E7CC0 /* AppDelegate.swift */,
 				491FE1EA1E97597200BF7ACF /* NetworkHandler.swift */,
 				49A48B431E9877BC003829F7 /* BandwidthTestHandler.swift */,
 				49A48B451E989ED0003829F7 /* PhoneModel.swift */,
+				49E487F31E9DE922004AC735 /* PulseView.swift */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -269,6 +286,9 @@
 				49A48B441E9877BC003829F7 /* BandwidthTestHandler.swift in Sources */,
 				491937BB1E9360E5008E7CC0 /* MainViewController.swift in Sources */,
 				49FD54C61E98ADAE00615796 /* RxCLLocationManagerDelegateProxy.swift in Sources */,
+				49E487F61E9DF073004AC735 /* CGRect.swift in Sources */,
+				49E487F41E9DE922004AC735 /* PulseView.swift in Sources */,
+				49E487F21E9DDD28004AC735 /* UIColor.swift in Sources */,
 				49A48B461E989ED0003829F7 /* PhoneModel.swift in Sources */,
 				491937B91E9360E5008E7CC0 /* AppDelegate.swift in Sources */,
 				49FD54C91E98ADD100615796 /* CLLocationManager+Rx.swift in Sources */,

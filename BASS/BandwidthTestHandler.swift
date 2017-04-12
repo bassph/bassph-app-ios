@@ -42,6 +42,7 @@ class BandwidthTestHandler {
     private (set) var testLengthFinished = false
     private (set) var mbpsTracked = [Double]()
     private (set) var startTime = NSDate().timeIntervalSince1970
+    private (set) var lastResult = [String : Any]()
     
     var onDownloadedMBUpdated = BehaviorSubject<Double>(value: 0)
     var onMbpsTracked = PublishSubject<Double>()
@@ -143,6 +144,10 @@ class BandwidthTestHandler {
             .addDisposableTo(disposeBag)
     }
     
+    var maxMbps: Double {
+        return $.max(mbpsTracked) ?? 0
+    }
+    
     private func getCurrentKbps() -> Int {
         return Int(($.max(mbpsTracked) ?? 0) * 1000)
     }
@@ -207,12 +212,12 @@ class BandwidthTestHandler {
             "connectivity": connectivity,
             "testData": testData
         ]
-        print(parameters)
         
+        lastResult = parameters
         let url = "https://bass.bnshosting.net/api/record"
         RxAlamofire
             .request(.post, url, parameters: parameters, encoding: JSONEncoding.default)
-            .subscribe(onNext: { [weak self] (response) in
+            .subscribe(onNext: { (request) in
                 
             }, onError: { [weak self] (error) in
                 self?.status.onNext(.uploadError)
