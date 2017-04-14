@@ -176,7 +176,8 @@ class BandwidthTestHandler {
             "id": deviceId!.lowercased(),
             "platform": "iOS",
             "manufacturer": "Apple",
-            "name": UIDevice.current.type.rawValue,
+            "name": "iOS " + UIDevice.current.systemVersion,
+            "model": UIDevice.current.type.rawValue,
             "release": UIDevice.current.systemVersion
         ]
         var location = [String : Any]()
@@ -187,9 +188,21 @@ class BandwidthTestHandler {
             location["mLatitude"] = currentLocation.coordinate.latitude
             location["mLongitude"] = currentLocation.coordinate.longitude
             location["mTime"] = currentLocation.timestamp.timeIntervalSince1970
+            location["mElapsedRealtimeNanos"] = DispatchTime.now().uptimeNanoseconds
+            location["mSpeed"] = currentLocation.speed
+            location["mFieldMask"] = 8
+            location["mProvider"] = "fused"
         }
         let connectivity: [String : Any] = [
-            "typeName": NetworkHandler.getConnectivity(),
+            "available": true,
+            "detailedState": "CONNECTED",
+            "failover": false,
+            "roaming": false,
+            "state": "CONNECTED",
+            "subType": NetworkHandler.getAndroidNetworkSubType(),
+            "subTypeName": NetworkHandler.getAndroidNetworkSubTypeName(),
+            "type": NetworkHandler.getAndroidNetworkType(),
+            "typeName": NetworkHandler.getAndroidNetworkTypeName(),
             "extraInfo": NetworkHandler.getWifiSSID() ?? "",
         ]
         let testData: [String : Any] = [
@@ -199,34 +212,79 @@ class BandwidthTestHandler {
             "mbUsage": getCurrentMBUsage(),
             "mbpsTracked": mbpsTracked
         ]
+        
+        let signalBars = NetworkHandler.getCellSignalStrength()
+        var signalDB = 0
+        switch signalBars {
+        case 5: signalDB = -51
+        case 4: signalDB = -91
+        case 3: signalDB = -101
+        case 2: signalDB = -103
+        case 1: signalDB = -107
+        default: signalDB = -113
+        }
+        var signalType = NetworkHandler.getRadioAccessTechnology()
+        if signalType == "" {
+            signalType = "NONE"
+        }
+        
         let parameters: [String : Any] = [
             "uuid": UUID().uuidString.lowercased(),
             "time": finishTime,
-            "bandwidth": String(format: "%d Kbps", getCurrentKbps()),
+            "bandwidth": "\(getCurrentKbps()) Kbps",
             "operator": carrier["name"] ?? "",
             "carrier": carrier,
-            "signal": NetworkHandler.getRadioAccessTechnology(),
-            "signalBars": NetworkHandler.getCellSignalStrength(),
+            "signal": "\(signalType) : \(signalDB)",
+            "signalBars": signalBars,
             "device": device,
             "location": location,
             "connectivity": connectivity,
-            "testData": testData
+            "testData": testData,
+            "imei": "none"
         ]
         
         lastResult = parameters
+        startUpload(parameters)
+    }
+    
+    private func startUpload(_ parameters: [String : Any]) {
+        do {
+            let json = try JSONSerialization.data(withJSONObject: parameters, options: JSONSerialization.WritingOptions.prettyPrinted)
+            print("JSON: \(String(data: json, encoding: .utf8)!)")
+        } catch {
+            
+        }
         let url = "https://bass.bnshosting.net/api/record"
         RxAlamofire
             .request(.post, url, parameters: parameters, encoding: JSONEncoding.default)
             .subscribe(onNext: { (request) in
-                
+                request.validate().responseJSON(completionHandler: { (response) in
+                    switch response.result {
+                    case .success:
+                        if let json = response.result.value {
+                            print("Response: \(json)")
+                        }
+                        break
+                    case .failure(_):
+                        if let data = response.data {
+                            do {
+                                let json = try JSONSerialization.jsonObject(with: data)
+                                print("Error: \(json)")
+                            } catch {
+                                
+                            }
+                        }
+                        break
+                    }
+                })
             }, onError: { [weak self] (error) in
+                print(error)
                 self?.status.onNext(.uploadError)
                 self?.status.onNext(.idle)
-            }, onCompleted: { [weak self] in
-                self?.status.onNext(.completed)
-                self?.status.onNext(.idle)
+                }, onCompleted: { [weak self] in
+                    self?.status.onNext(.completed)
+                    self?.status.onNext(.idle)
             })
             .addDisposableTo(disposeBag)
     }
-    
 }

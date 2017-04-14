@@ -250,4 +250,58 @@ class NetworkHandler {
         return currentSSID
     }
     
+    class func getAndroidNetworkSubType() -> Int {
+        let networkInfo = CTTelephonyNetworkInfo()
+        let carrierType = networkInfo.currentRadioAccessTechnology
+        switch carrierType {
+        case CTRadioAccessTechnologyGPRS?: return 1
+        case CTRadioAccessTechnologyEdge?: return 2
+        case CTRadioAccessTechnologyCDMA1x?: return 4
+        case CTRadioAccessTechnologyWCDMA?: return 3
+        case CTRadioAccessTechnologyHSDPA?: return 8
+        case CTRadioAccessTechnologyHSUPA?: return 9
+        case CTRadioAccessTechnologyCDMAEVDORev0?: return 5
+        case CTRadioAccessTechnologyCDMAEVDORevA?: return 6
+        case CTRadioAccessTechnologyCDMAEVDORevB?: return 12
+        case CTRadioAccessTechnologyeHRPD?: return 14
+        case CTRadioAccessTechnologyLTE?: return 13
+        default: return 0
+        }
+    }
+    
+    class func getAndroidNetworkSubTypeName() -> String {
+        let networkInfo = CTTelephonyNetworkInfo()
+        let carrierType = networkInfo.currentRadioAccessTechnology
+        switch carrierType {
+        case CTRadioAccessTechnologyGPRS?: return "GPRS"
+        case CTRadioAccessTechnologyEdge?: return "EDGE"
+        case CTRadioAccessTechnologyCDMA1x?: return "CDMA"
+        case CTRadioAccessTechnologyWCDMA?: return "WCDMA"
+        case CTRadioAccessTechnologyHSDPA?: return "HSDPA"
+        case CTRadioAccessTechnologyHSUPA?: return "HSUPA"
+        case CTRadioAccessTechnologyCDMAEVDORev0?: return "EVDO-0"
+        case CTRadioAccessTechnologyCDMAEVDORevA?: return "EVDO-A"
+        case CTRadioAccessTechnologyCDMAEVDORevB?: return "EVDO-B"
+        case CTRadioAccessTechnologyeHRPD?: return "EHRPD"
+        case CTRadioAccessTechnologyLTE?: return "LTE"
+        default: return ""
+        }
+    }
+    
+    class func getAndroidNetworkType() -> Int {
+        let connectivity = NetworkHandler.getConnectivity()
+        switch connectivity {
+        case "WIFI": return 1
+        default: return 0
+        }
+    }
+    
+    class func getAndroidNetworkTypeName() -> String {
+        let connectivity = NetworkHandler.getConnectivity()
+        switch connectivity {
+        case "WIFI": return "WIFI"
+        default: return "MOBILE"
+        }
+    }
+    
 }
