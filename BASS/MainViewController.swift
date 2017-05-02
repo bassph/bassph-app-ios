@@ -9,6 +9,7 @@
 import UIKit
 import SnapKit
 import RxSwift
+import FBSDKShareKit
 
 class MainViewController: UIViewController {
     
@@ -16,6 +17,9 @@ class MainViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        navigationItem.title = "BASS PH"
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Map", style: .plain, target: self, action: #selector(onNavBarRightButtonClicked))
         
         let pulseView = PulseView()
         view.addSubview(pulseView)
@@ -45,7 +49,7 @@ class MainViewController: UIViewController {
         buttonBackgroundView.clipsToBounds = true
         
         startTestButton.tintColor = UIColor.white
-        startTestButton.setTitle("Start Test", for: .normal)
+        startTestButton.setTitle("Begin Test", for: .normal)
         startTestButton.setTitleColor(UIColor.white, for: .normal)
         startTestButton.setTitleColor(UIColor(rgb: 0x00cfff), for: .highlighted)
         startTestButton.addTarget(self, action: #selector(onStartTestButtonClicked), for: .touchUpInside)
@@ -213,10 +217,46 @@ class MainViewController: UIViewController {
         BandwidthTestHandler.instance.startTest()
     }
     
+    func onNavBarRightButtonClicked(button: UIBarButtonItem) {
+        self.navigationController?.pushViewController(ReportMapViewController(), animated: true)
+    }
+    
+    func onShareToFacebook() {
+        let result = BandwidthTestHandler.instance.lastResult
+        var signal = result["signal"] as? String ?? "None"
+        if signal == "" { signal = "None" }
+        
+        let share = FBSDKShareLinkContent()
+        share.imageURL = URL(string: "https://scontent.fmnl4-6.fna.fbcdn.net/v/t1.0-9/17796714_184477785394716_1700205285852495439_n.png?oh=40acf149ffe8dcc0e24e60af7f844514&oe=595D6465")
+        share.contentURL = URL(string: "https://bass.bnshosting.net/device")
+        share.contentDescription = "" +
+            "Connectivity: \((result["connectivity"] as! [String : Any])["typeName"]!) :" +
+            "Bandwidth: \(result["bandwidth"]!) :" +
+            "Carrier Name: \(result["operator"]!) :" +
+            "Radio Access: \(signal) :" +
+            "Signal Strength: \(result["signalBars"]!)/5"
+        share.hashtag = FBSDKHashtag(string: "#BASSparaSaBayan")
+        
+        let dialog = FBSDKShareDialog()
+        dialog.mode = .feedWeb
+        dialog.fromViewController = self
+        dialog.shareContent = share
+        
+        if (dialog.canShow()) {
+            dialog.show()
+        } else {
+            dialog.mode = .feedBrowser
+            dialog.show()
+        }
+    }
+    
     func showResultDialog(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
-        alert.addAction(UIAlertAction(title: "Close", style: UIAlertActionStyle.default, handler: nil))
-        alert.addAction(UIAlertAction(title: "Raw Data", style: UIAlertActionStyle.cancel, handler: { [weak self] (alert) in
+        alert.addAction(UIAlertAction(title: "Close", style: UIAlertActionStyle.cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Share to FB", style: UIAlertActionStyle.default, handler: { [weak self] (alert) in
+            self?.onShareToFacebook()
+        }))
+        alert.addAction(UIAlertAction(title: "Raw Data", style: UIAlertActionStyle.default, handler: { [weak self] (alert) in
             let result = BandwidthTestHandler.instance.lastResult
             self?.showAlertDialog(title: "Raw Data", message: result.debugDescription)
         }))

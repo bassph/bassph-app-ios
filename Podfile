@@ -11,4 +11,5 @@ target 'BASS' do
   pod 'RxAlamofire'
   pod 'RxCocoa'
   pod 'AlamofireSwiftyJSON'
+  pod 'FBSDKShareKit'
 end

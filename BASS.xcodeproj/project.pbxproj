@@ -13,6 +13,7 @@
 		491937C01E9360E5008E7CC0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 491937BF1E9360E5008E7CC0 /* Assets.xcassets */; };
 		491937C31E9360E5008E7CC0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 491937C11E9360E5008E7CC0 /* LaunchScreen.storyboard */; };
 		491FE1EB1E97597200BF7ACF /* NetworkHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491FE1EA1E97597200BF7ACF /* NetworkHandler.swift */; };
+		4999A3F71EB8505800AD8403 /* ReportMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4999A3F61EB8505800AD8403 /* ReportMapViewController.swift */; };
 		49A48B441E9877BC003829F7 /* BandwidthTestHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A48B431E9877BC003829F7 /* BandwidthTestHandler.swift */; };
 		49A48B461E989ED0003829F7 /* PhoneModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A48B451E989ED0003829F7 /* PhoneModel.swift */; };
 		49CDB6A71E938FCA008AE47E /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49CDB6A61E938FCA008AE47E /* CoreTelephony.framework */; };
@@ -36,6 +37,7 @@
 		491937C41E9360E5008E7CC0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		491FE1EA1E97597200BF7ACF /* NetworkHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkHandler.swift; sourceTree = "<group>"; };
 		491FE1EC1E975A3200BF7ACF /* BASS-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BASS-Bridging-Header.h"; sourceTree = "<group>"; };
+		4999A3F61EB8505800AD8403 /* ReportMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportMapViewController.swift; sourceTree = "<group>"; };
 		49A48B431E9877BC003829F7 /* BandwidthTestHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BandwidthTestHandler.swift; sourceTree = "<group>"; };
 		49A48B451E989ED0003829F7 /* PhoneModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhoneModel.swift; sourceTree = "<group>"; };
 		49CDB6A61E938FCA008AE47E /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
@@ -130,6 +132,7 @@
 			isa = PBXGroup;
 			children = (
 				491937BA1E9360E5008E7CC0 /* MainViewController.swift */,
+				4999A3F61EB8505800AD8403 /* ReportMapViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -283,6 +286,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				49FD54C01E98AAA200615796 /* GeolocationService.swift in Sources */,
+				4999A3F71EB8505800AD8403 /* ReportMapViewController.swift in Sources */,
 				49A48B441E9877BC003829F7 /* BandwidthTestHandler.swift in Sources */,
 				491937BB1E9360E5008E7CC0 /* MainViewController.swift in Sources */,
 				49FD54C61E98ADAE00615796 /* RxCLLocationManagerDelegateProxy.swift in Sources */,

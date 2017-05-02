@@ -26,7 +26,8 @@ class BandwidthTestHandler {
         case completed
     }
     
-    var speedTestUrl = "http://speedtest.singapore.linode.com/100MB-singapore.bin"
+    var recordUrl = "https://bass.bnshosting.net/api/v2/record"
+    var speedTestUrl = "http://mirror.pregi.net/centos/7/isos/x86_64/CentOS-7-x86_64-Everything-1611.iso"
     var dataCapSizeInMB: Int = 5
     var testLengthInSeconds: TimeInterval = 10
     let samplingRateInSeconds: TimeInterval = 1
@@ -169,7 +170,8 @@ class BandwidthTestHandler {
             deviceId = UUID().uuidString.lowercased()
             defaults.set(deviceId, forKey: "deviceId")
         }
-
+        let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
+        let appBuildNumber = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? ""
         let finishTime = NSDate().timeIntervalSince1970
         let carrier = NetworkHandler.getCarrierDetails()
         let device: [String : Any] = [
@@ -178,7 +180,9 @@ class BandwidthTestHandler {
             "manufacturer": "Apple",
             "name": "iOS " + UIDevice.current.systemVersion,
             "model": UIDevice.current.type.rawValue,
-            "release": UIDevice.current.systemVersion
+            "release": UIDevice.current.systemVersion,
+            "appVersion": appVersion,
+            "appBuildNumber": appBuildNumber
         ]
         var location = [String : Any]()
         if let currentLocation = self.currentLocation {
@@ -240,7 +244,8 @@ class BandwidthTestHandler {
             "location": location,
             "connectivity": connectivity,
             "testData": testData,
-            "imei": "none"
+            "imei": "none",
+            "version": appVersion
         ]
         
         lastResult = parameters
@@ -254,9 +259,9 @@ class BandwidthTestHandler {
         } catch {
             
         }
-        let url = "https://bass.bnshosting.net/api/record"
+        
         RxAlamofire
-            .request(.post, url, parameters: parameters, encoding: JSONEncoding.default)
+            .request(.post, recordUrl, parameters: parameters, encoding: JSONEncoding.default)
             .subscribe(onNext: { (request) in
                 request.validate().responseJSON(completionHandler: { (response) in
                     switch response.result {

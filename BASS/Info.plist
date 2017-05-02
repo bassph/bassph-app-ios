@@ -17,9 +17,9 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0.1</string>
+	<string>1.1.0</string>
 	<key>CFBundleVersion</key>
-	<string>2</string>
+	<string>3</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -49,5 +49,27 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
+    <key>CFBundleURLTypes</key>
+	<array>
+	<dict>
+		<key>CFBundleURLSchemes</key>
+		<array>
+		<string>fb1283019038413994</string>
+		</array>
+	</dict>
+	</array>
+	<key>FacebookAppID</key>
+    <string>1283019038413994</string>
+	<key>FacebookDisplayName</key>
+    <string>BASS</string>
+	<key>LSApplicationQueriesSchemes</key>
+    <array>
+    <string>fbapi</string>
+        <string>fb-messenger-api</string>
+        <string>fbauth2</string>
+        <string>fbshareextension</string>
+    </array>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>This is for you to be able to upload your photos to Facebook.</string>
 </dict>
 </plist>

@@ -14,7 +14,22 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>Bolts.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Dollar.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>FBSDKCoreKit.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>FBSDKShareKit.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -57,12 +72,12 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>47143C302581315567C2F6675A0930AF</key>
+		<key>44CAD6CE523055ED339E87154473A254</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>4DD797618674EC55B7714D47CC9FBCE3</key>
+		<key>5EEE0DD6AB5E6660E353920D772B6F70</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -72,7 +87,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>746C36A4F801B8DC17DA52D1024F7CBC</key>
+		<key>709FC134CE42339A8D8E582280142775</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -82,12 +97,22 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>8CBA692125BE01BAA6C47B932B59B17F</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>977004231D12E8D7F7A0AB6346D27331</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>B61CA2B215A5CE86FBD50F1ED33BF2EB</key>
+		<key>9B57CC7FDACAD34C1D6B9878AE070317</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>BEF7E6E85DB5CDE5D7A18F4F2EB8494B</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -97,12 +122,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>C7B994A86D703591AAFA1B82D65D35C7</key>
+		<key>E396A93E4C79B22B7816E9F02F62ECED</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>EA6710F2DC34949D82E48F15938A5999</key>
+		<key>F20B7E873A3CFFF06BF13A1439DC056E</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>F387386752C918BBFA4408BB19F2F08A</key>
 		<dict>
 			<key>primary</key>
 			<true/>
