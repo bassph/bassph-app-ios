@@ -3,9 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
-	<string>en</string>
-	<key>CFBundleDisplayName</key>
-	<string>BASS PH</string>
+	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -17,9 +15,9 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.1.0</string>
+	<string>1.2.0</string>
 	<key>CFBundleVersion</key>
-	<string>3</string>
+	<string>6</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -27,12 +25,8 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Your location will be used to track where you are testing your bandwidth and signal strength.</string>
-	<key>NSLocationUsageDescription</key>
-	<string>Your location will be used to track where you are testing your bandwidth and signal strength.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Your location will be used to track where you are testing your bandwidth and signal strength.</string>
+	<string>Location will be used to track where the bandwidth test has been done.</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
@@ -48,28 +42,9 @@
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationPortraitUpsideDown</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-    <key>CFBundleURLTypes</key>
-	<array>
-	<dict>
-		<key>CFBundleURLSchemes</key>
-		<array>
-		<string>fb1283019038413994</string>
-		</array>
-	</dict>
-	</array>
-	<key>FacebookAppID</key>
-    <string>1283019038413994</string>
-	<key>FacebookDisplayName</key>
-    <string>BASS</string>
-	<key>LSApplicationQueriesSchemes</key>
-    <array>
-    <string>fbapi</string>
-        <string>fb-messenger-api</string>
-        <string>fbauth2</string>
-        <string>fbshareextension</string>
-    </array>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>This is for you to be able to upload your photos to Facebook.</string>
 </dict>
 </plist>

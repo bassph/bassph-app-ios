@@ -1,57 +1,61 @@
 PODS:
-  - Alamofire (4.4.0)
-  - AlamofireSwiftyJSON (0.2.0):
-    - Alamofire (~> 4.0)
-    - SwiftyJSON (~> 3.1)
+  - Alamofire (4.5.1)
   - Bolts (1.8.4):
     - Bolts/AppLinks (= 1.8.4)
     - Bolts/Tasks (= 1.8.4)
   - Bolts/AppLinks (1.8.4):
     - Bolts/Tasks
   - Bolts/Tasks (1.8.4)
-  - Dollar (6.2.0)
-  - FBSDKCoreKit (4.20.2):
+  - Dollar (7.0.0)
+  - FBSDKCoreKit (4.27.0):
     - Bolts (~> 1.7)
-  - FBSDKShareKit (4.20.2):
+  - FBSDKShareKit (4.27.0):
     - FBSDKCoreKit
-  - ReachabilitySwift (3)
-  - RxAlamofire (3.0.2):
-    - RxAlamofire/Core (= 3.0.2)
-  - RxAlamofire/Core (3.0.2):
-    - Alamofire (~> 4.0)
-    - RxSwift (~> 3.0)
-  - RxCocoa (3.3.1):
-    - RxSwift (~> 3.3)
-  - RxSwift (3.3.1)
-  - SnapKit (3.2.0)
-  - SwiftyJSON (3.1.4)
+  - ReachabilitySwift (4.0-beta2)
+  - RxAlamofire (4.0.0):
+    - RxAlamofire/Core (= 4.0.0)
+  - RxAlamofire/Core (4.0.0):
+    - Alamofire (~> 4.5.1)
+    - RxSwift (~> 4.0.0-beta.0)
+  - RxCocoa (4.0.0-beta.1):
+    - RxSwift (~> 4.0.0-beta.1)
+  - RxSwift (4.0.0-beta.1)
+  - SnapKit (4.0.0)
+  - SwiftyJSON (4.0.0-alpha.1)
 
 DEPENDENCIES:
   - Alamofire (~> 4)
-  - AlamofireSwiftyJSON
-  - Dollar
-  - FBSDKShareKit
-  - ReachabilitySwift
-  - RxAlamofire
-  - RxCocoa
-  - RxSwift (~> 3)
-  - SnapKit (~> 3)
-  - SwiftyJSON (~> 3)
+  - Dollar (~> 7)
+  - FBSDKShareKit (~> 4.26)
+  - ReachabilitySwift (= 4.0-beta2)
+  - RxAlamofire (from `https://github.com/RxSwiftCommunity/RxAlamofire.git`)
+  - RxCocoa (= 4.0.0-beta.1)
+  - RxSwift (= 4.0.0-beta.1)
+  - SnapKit (~> 4)
+  - SwiftyJSON (= 4.0.0-alpha.1)
+
+EXTERNAL SOURCES:
+  RxAlamofire:
+    :git: https://github.com/RxSwiftCommunity/RxAlamofire.git
+
+CHECKOUT OPTIONS:
+  RxAlamofire:
+    :commit: c2fdccf8058d1a61f5fbb540054c21372de1151d
+    :git: https://github.com/RxSwiftCommunity/RxAlamofire.git
 
 SPEC CHECKSUMS:
-  Alamofire: dc44b1600b800eb63da6a19039a0083d62a6a62d
-  AlamofireSwiftyJSON: 5a49196b8b061e32f5ebc84fa0815300bd8a974e
+  Alamofire: 2d95912bf4c34f164fdfc335872e8c312acaea4a
   Bolts: 8a7995239dbe724f9cba2248b766d48b7ebdd322
-  Dollar: da81aacae30cf7dd059bfdfec709e97f2f0ae2f8
-  FBSDKCoreKit: 82eac696eb6157da5f4266c3a241f00e9bd72471
-  FBSDKShareKit: ca9b22264ea49a896dafb2467c1a4f72aa41996f
-  ReachabilitySwift: f5b9bb30a0777fac8f09ce8b067e32faeb29bb64
-  RxAlamofire: bc53604b29fd2d220cfaa490c736cc4500819f34
-  RxCocoa: 7dcb7a1860fc9cd0e23dae67ab105fc2916670b6
-  RxSwift: 8fc9f2de6275a9101d518444e00bf32f1a42caac
-  SnapKit: 1ca44df72cfa543218d177cb8aab029d10d86ea7
-  SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
+  Dollar: b052b910c711bed91c26caeaec85aa22bccf1655
+  FBSDKCoreKit: ebc6c5f5b3f0e72396041050e2266781a38ac587
+  FBSDKShareKit: 4f83956d4ca2960730fe7588a168eb8d535c06dc
+  ReachabilitySwift: d2e9cf75db8b2140bef42db5dafc6269d46cc137
+  RxAlamofire: c50217ed8ebd04888e2ab4b995d0eaeb178895fd
+  RxCocoa: ca6cc0f4453145d90002d80df8f9c83dd8fb7338
+  RxSwift: 29f07e0e72cc5b40f146c64cc520ea6a6a0c73e9
+  SnapKit: a42d492c16e80209130a3379f73596c3454b7694
+  SwiftyJSON: dc88934f85fb50b263b1632b9cbad3402505783e
 
-PODFILE CHECKSUM: 8041bb0acd68bbbf8bc2e4bb96e2821536948fea
+PODFILE CHECKSUM: c14fa8e36f0c540626b402b89de38a08e4b797b9
 
-COCOAPODS: 1.2.1.beta.1
+COCOAPODS: 1.3.1
