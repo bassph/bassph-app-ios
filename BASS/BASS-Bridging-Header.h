@@ -2,7 +2,7 @@
 //  BASS-Bridging-Header.h
 //  BASS
 //
-//  Created by Andrew on 07/04/2017.
+//  Created by Andrew Alegre on 23/09/2017.
 //  Copyright © 2017 Collave. All rights reserved.
 //
 

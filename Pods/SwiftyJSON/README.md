@@ -19,6 +19,7 @@ SwiftyJSON makes it easy to deal with JSON data in Swift.
    - [Literal convertibles](#literal-convertibles)
    - [Merging](#merging)
 5. [Work with Alamofire](#work-with-alamofire)
+6. [Work with Moya](#work-with-moya)
 
 > For Legacy Swift support, take a look at the [swift2 branch](https://github.com/SwiftyJSON/SwiftyJSON/tree/swift2)
 
@@ -117,7 +118,7 @@ let package = Package(
     name: "YOUR_PROJECT_NAME",
     targets: [],
     dependencies: [
-        .Package(url: "https://github.com/SwiftyJSON/SwiftyJSON.git", versions: Version(1,0,0)..<Version(3, .max, .max)),
+        .Package(url: "https://github.com/SwiftyJSON/SwiftyJSON.git", versions: Version(1, 0, 0)..<Version(3, .max, .max)),
     ]
 )
 ```
@@ -142,10 +143,12 @@ import SwiftyJSON
 ```swift
 let json = JSON(data: dataFromNetworking)
 ```
+Or
 
 ```swift
 let json = JSON(jsonObject)
 ```
+Or
 
 ```swift
 if let dataFromString = jsonString.data(using: .utf8, allowLossyConversion: false) {
@@ -212,11 +215,18 @@ for (index,subJson):(String, JSON) in json {
 
 #### Error
 
+##### SwiftyJSON 4.x
+
+SwiftyJSON 4.x introduces an enum type called `SwiftyJSONError`, which includes `unsupportedType`, `indexOutOfBounds`, `elementTooDeep`, `wrongType`, `notExist` and `invalidJSON`, at the same time, `ErrorDomain` are being replaced by `SwiftyJSONError.errorDomain`.
+Note: Those old error types are deprecated in SwiftyJSON 4.x and will be removed in the future release.
+
+##### SwiftyJSON 3.x
+
 Use a subscript to get/set a value in an Array or Dictionary
 
 If the JSON is:
 *  an array, the app may crash with "index out-of-bounds."
-*  a dictionary, it will be assigned `nil` without a reason.
+*  a dictionary, it will be assigned to `nil` without a reason.
 *  not an array or a dictionary, the app may crash with an "unrecognised selector" exception.
 
 This will never happen in SwiftyJSON.
@@ -226,7 +236,7 @@ let json = JSON(["name", "age"])
 if let name = json[999].string {
     //Do something you want
 } else {
-    print(json[999].error) // "Array[999] is out of bounds"
+    print(json[999].error!) // "Array[999] is out of bounds"
 }
 ```
 
@@ -235,7 +245,7 @@ let json = JSON(["name":"Jack", "age": 25])
 if let name = json["address"].string {
     //Do something you want
 } else {
-    print(json["address"].error) // "Dictionary["address"] does not exist"
+    print(json["address"].error!) // "Dictionary["address"] does not exist"
 }
 ```
 
@@ -245,14 +255,14 @@ if let age = json[0].string {
     //Do something you want
 } else {
     print(json[0])       // "Array[0] failure, It is not an array"
-    print(json[0].error) // "Array[0] failure, It is not an array"
+    print(json[0].error!) // "Array[0] failure, It is not an array"
 }
 
 if let name = json["name"].string {
     //Do something you want
 } else {
     print(json["name"])       // "Dictionary[\"name"] failure, It is not an dictionary"
-    print(json["name"].error) // "Dictionary[\"name"] failure, It is not an dictionary"
+    print(json["name"].error!) // "Dictionary[\"name"] failure, It is not an dictionary"
 }
 ```
 
@@ -264,7 +274,7 @@ if let id = json["user"]["favourites_count"].number {
    //Do something you want
 } else {
    //Print the error
-   print(json["user"]["favourites_count"].error)
+   print(json["user"]["favourites_count"].error!)
 }
 ```
 
@@ -274,7 +284,7 @@ if let id = json["user"]["name"].string {
    //Do something you want
 } else {
    //Print the error
-   print(json["user"]["name"])
+   print(json["user"]["name"].error!)
 }
 ```
 
@@ -284,7 +294,7 @@ if let id = json["user"]["is_translator"].bool {
    //Do something you want
 } else {
    //Print the error
-   print(json["user"]["is_translator"])
+   print(json["user"]["is_translator"].error!)
 }
 ```
 
@@ -294,7 +304,7 @@ if let id = json["user"]["id"].int {
    //Do something you want
 } else {
    //Print the error
-   print(json["user"]["id"])
+   print(json["user"]["id"].error!)
 }
 ...
 ```
@@ -449,7 +459,7 @@ It is possible to merge one JSON into another JSON. Merging a JSON into another 
 
 If both JSONs contain a value for the same key, _mostly_ this value gets overwritten in the original JSON, but there are two cases where it provides some special treatment:
 
-- In case of both values being a `JSON.Type.array` the values form the array found in the `other` JSON getting appended to the original JSON's array value. 
+- In case of both values being a `JSON.Type.array` the values form the array found in the `other` JSON getting appended to the original JSON's array value.
 - In case of both values being a `JSON.Type.dictionary` both JSON-values are getting merged the same way the encapsulating JSON is merged.
 
 In case, where two fields in a JSON have a different types, the value will get always overwritten.
@@ -502,7 +512,7 @@ let representation = json.rawString(options: [.castNilToNSNull: true])
 // representation is "{\"1\":2,\"2\":\"two\",\"3\":null}", which represents {"1":2,"2":"two","3":null}
 ```
 
-## Work with Alamofire
+## Work with [Alamofire](https://github.com/Alamofire/Alamofire)
 
 SwiftyJSON nicely wraps the result of the Alamofire JSON response handler:
 
@@ -516,4 +526,28 @@ Alamofire.request(url, method: .get).validate().responseJSON { response in
         print(error)
     }
 }
+```
+
+We also provide an extension of Alamofire for serializing NSData to SwiftyJSON's JSON.
+
+See: [Alamofire-SwiftyJSON](https://github.com/SwiftyJSON/Alamofire-SwiftyJSON)
+
+
+## Work with [Moya](https://github.com/Moya/Moya)
+
+SwiftyJSON parse data to JSON:
+
+```swift
+let provider = MoyaProvider<Backend>()
+provider.request(.showProducts) { result in
+    switch result {
+    case let .success(moyaResponse):
+        let data = moyaResponse.data
+        let json = JSON(data: data) // convert network data to json
+        print(json)
+    case let .failure(error):
+        print("error: \(error)")
+    }
+}
+
 ```
