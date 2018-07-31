@@ -6,9 +6,8 @@
 //  Copyright © 2017 Krunoslav Zaher. All rights reserved.
 //
 
-#if !RX_NO_MODULE
-    import RxSwift
-#endif
+import RxSwift
+import Dispatch
 
 extension ObservableType {
 
@@ -262,6 +261,8 @@ extension Variable {
     }
 }
 
+#if !os(Linux)
+
 extension DelegateProxy {
     @available(*, unavailable, renamed: "assignedProxy(for:)")
     public static func assignedProxyFor(_ object: ParentObject) -> Delegate? {
@@ -273,6 +274,8 @@ extension DelegateProxy {
         fatalError()
     }
 }
+
+#endif
 
 /**
 Observer that enforces interface binding rules:
@@ -339,3 +342,155 @@ public final class UIBindingObserver<UIElementType, Value> : ObserverType where 
         }
     }
 #endif
+
+#if os(iOS) || os(tvOS)
+extension Reactive where Base: UIImageView {
+
+    /// Bindable sink for `image` property.
+    /// - parameter transitionType: Optional transition type while setting the image (kCATransitionFade, kCATransitionMoveIn, ...)
+    @available(*, deprecated, renamed: "image")
+    public func image(transitionType: String? = nil) -> Binder<UIImage?> {
+        return Binder(base) { imageView, image in
+            if let transitionType = transitionType {
+                if image != nil {
+                    let transition = CATransition()
+                    transition.duration = 0.25
+                    transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+                    transition.type = transitionType
+                    imageView.layer.add(transition, forKey: kCATransition)
+                }
+            }
+            else {
+                imageView.layer.removeAllAnimations()
+            }
+            imageView.image = image
+        }
+    }
+}
+    
+extension Reactive where Base: UISegmentedControl {
+    @available(*, deprecated, renamed: "enabledForSegment(at:)")
+    public func enabled(forSegmentAt segmentAt: Int) -> Binder<Bool> {
+        return enabledForSegment(at: segmentAt)
+    }
+}
+#endif
+
+#if os(macOS)
+
+    extension Reactive where Base: NSImageView {
+
+        /// Bindable sink for `image` property.
+        ///
+        /// - parameter transitionType: Optional transition type while setting the image (kCATransitionFade, kCATransitionMoveIn, ...)
+        @available(*, deprecated, renamed: "image")
+        public func image(transitionType: String? = nil) -> Binder<NSImage?> {
+            return Binder(self.base) { control, value in
+                if let transitionType = transitionType {
+                    if value != nil {
+                        let transition = CATransition()
+                        transition.duration = 0.25
+                        transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+                        transition.type = transitionType
+                        control.layer?.add(transition, forKey: kCATransition)
+                    }
+                }
+                else {
+                    control.layer?.removeAllAnimations()
+                }
+                control.image = value
+            }
+        }
+    }
+#endif
+
+import RxSwift
+
+extension Variable {
+    /// Converts `Variable` to `Driver` trait.
+    ///
+    /// - returns: Driving observable sequence.
+    public func asDriver() -> Driver<E> {
+        let source = self.asObservable()
+            .observeOn(DriverSharingStrategy.scheduler)
+        return Driver(source)
+    }
+}
+
+
+private let errorMessage = "`drive*` family of methods can be only called from `MainThread`.\n" +
+"This is required to ensure that the last replayed `Driver` element is delivered on `MainThread`.\n"
+
+extension SharedSequenceConvertibleType where SharingStrategy == DriverSharingStrategy {
+    /**
+     Creates new subscription and sends elements to variable.
+     This method can be only called from `MainThread`.
+
+     - parameter variable: Target variable for sequence elements.
+     - returns: Disposable object that can be used to unsubscribe the observer from the variable.
+     */
+    public func drive(_ variable: Variable<E>) -> Disposable {
+        MainScheduler.ensureExecutingOnScheduler(errorMessage: errorMessage)
+        return drive(onNext: { e in
+            variable.value = e
+        })
+    }
+
+    /**
+     Creates new subscription and sends elements to variable.
+     This method can be only called from `MainThread`.
+
+     - parameter variable: Target variable for sequence elements.
+     - returns: Disposable object that can be used to unsubscribe the observer from the variable.
+     */
+    public func drive(_ variable: Variable<E?>) -> Disposable {
+        MainScheduler.ensureExecutingOnScheduler(errorMessage: errorMessage)
+        return drive(onNext: { e in
+            variable.value = e
+        })
+    }
+}
+
+extension ObservableType {
+    /**
+     Creates new subscription and sends elements to variable.
+
+     In case error occurs in debug mode, `fatalError` will be raised.
+     In case error occurs in release mode, `error` will be logged.
+
+     - parameter to: Target variable for sequence elements.
+     - returns: Disposable object that can be used to unsubscribe the observer.
+     */
+    public func bind(to variable: Variable<E>) -> Disposable {
+        return subscribe { e in
+            switch e {
+            case let .next(element):
+                variable.value = element
+            case let .error(error):
+                let error = "Binding error to variable: \(error)"
+                #if DEBUG
+                    rxFatalError(error)
+                #else
+                    print(error)
+                #endif
+            case .completed:
+                break
+            }
+        }
+    }
+
+    /**
+     Creates new subscription and sends elements to variable.
+
+     In case error occurs in debug mode, `fatalError` will be raised.
+     In case error occurs in release mode, `error` will be logged.
+
+     - parameter to: Target variable for sequence elements.
+     - returns: Disposable object that can be used to unsubscribe the observer.
+     */
+    public func bind(to variable: Variable<E?>) -> Disposable {
+        return self.map { $0 as E? }.bind(to: variable)
+    }
+}
+
+

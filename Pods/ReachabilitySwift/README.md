@@ -83,7 +83,7 @@ Just drop the **Reachability.swift** file into your project. That's it!
 [CocoaPods Installation]: https://guides.cocoapods.org/using/getting-started.html#getting-started
  
  4. In your code import Reachability like so:
-   `import ReachabilitySwift`
+   `import Reachability`
 
 ### Carthage
 [Carthage][] is a decentralized dependency manager that builds your dependencies and provides you with binary frameworks.
@@ -104,12 +104,12 @@ To install Reachability.swift with Carthage:
 5. Add `$(SRCROOT)/Carthage/Build/iOS/ReachabilitySwiift.framework` to `Input Files` of Run Script Phase for Carthage.
 
 6. In your code import Reachability likse so:
-`import ReachabilitySwift`
+`import Reachability`
 
 
 [Carthage]: https://github.com/Carthage/Carthage
 [Homebrew]: http://brew.sh
-[Foto Flipper]: http://itunes.com/apps/fotoflipper
+[Photo Flipper]: https://itunes.apple.com/app/apple-store/id749627884?pt=215893&ct=GitHubReachability&mt=8
 
 ## Example - closures
 

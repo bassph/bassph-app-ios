@@ -12,6 +12,7 @@ import RxSwift
 import Reachability
 import CoreTelephony
 import SystemConfiguration.CaptiveNetwork
+import Try
 
 struct NetworkMeasurement {
     var bytesReceived: UInt64 = 0
@@ -87,22 +88,30 @@ class NetworkHandler {
     
     // http://stackoverflow.com/a/41170417
     class func getCellSignalStrength() -> Int {
-        let application = UIApplication.shared
-        let statusBarView = application.value(forKey: "statusBar") as! UIView
-        let foregroundView = statusBarView.value(forKey: "foregroundView") as! UIView
-        let foregroundViewSubviews = foregroundView.subviews
-        
-        var dataNetworkItemView: UIView!
-        for subview in foregroundViewSubviews {
-            if subview.isKind(of: NSClassFromString("UIStatusBarSignalStrengthItemView")!) {
-                dataNetworkItemView = subview
-                break
-            } else {
-                return 0 //NO SERVICE
+        do {
+            var statusBarView: UIView!
+            var foregroundView: UIView!
+            var value: Int = -1
+            try trap {
+                let application = UIApplication.shared
+                statusBarView = application.value(forKey: "statusBar") as! UIView
+                foregroundView = statusBarView.value(forKey: "foregroundView") as! UIView
+                let foregroundViewSubviews = foregroundView.subviews
+                var dataNetworkItemView: UIView!
+                for subview in foregroundViewSubviews {
+                    if subview.isKind(of: NSClassFromString("UIStatusBarSignalStrengthItemView")!) {
+                        dataNetworkItemView = subview
+                        break
+                    } else {
+                        value = 0 // NO SERVICE
+                    }
+                }
+                value = dataNetworkItemView.value(forKey: "signalStrengthBars") as! Int
             }
+            return value
+        } catch _ as NSError {
+            return -1
         }
-        
-        return dataNetworkItemView.value(forKey: "signalStrengthBars") as! Int
     }
     
     class func getRadioAccessTechnology() -> String {
@@ -149,8 +158,8 @@ class NetworkHandler {
                 let rec = unsafeBitCast(interfaceName, to: AnyObject.self)
                 let unsafeInterfaceData = CNCopyCurrentNetworkInfo("\(rec)" as CFString)
                 if unsafeInterfaceData != nil {
-                    let interfaceData = unsafeInterfaceData! as Dictionary!
-                    currentSSID = interfaceData?["SSID" as CFString] as? String
+                    let interfaceData = unsafeInterfaceData! as Dictionary
+                    currentSSID = interfaceData["SSID" as CFString] as? String
                 }
             }
         }

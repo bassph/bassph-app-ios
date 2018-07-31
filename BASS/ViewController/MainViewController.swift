@@ -23,6 +23,8 @@ class MainViewController: UIViewController {
     let activityIndicator = UIActivityIndicatorView()
     let disposeBag = DisposeBag()
     
+    var moodView: UIView!
+    var currentMood: Int = 0
     var lastMappedResult: [String : Any]? = nil
     
     override func viewDidLoad() {
@@ -134,6 +136,98 @@ class MainViewController: UIViewController {
             $0.height.equalTo(30)
             $0.right.equalToSuperview()
         }
+        
+        // Mood
+        _ = view.add(UIView()) {
+            $0.isHidden = true
+            $0.backgroundColor = UIColor(red: 0, green: 0, blue: 0, a: 180)
+            $0.snp.makeConstraints {
+                $0.edges.equalToSuperview()
+            }
+            _ = $0.add(UIView()) { (dialog) in
+                dialog.backgroundColor = UIColor.white
+                dialog.layer.cornerRadius = 6
+                dialog.snp.makeConstraints {
+                    $0.centerY.equalToSuperview()
+                    $0.left.equalToSuperview().offset(6)
+                    $0.width.equalToSuperview().inset(6)
+                    $0.height.equalTo(206)
+                }
+                
+                let label = dialog.add(UILabel()) { (label) in
+                    label.numberOfLines = 2
+                    label.text = "How feel about your current internet provider?"
+                    label.lineBreakMode = .byWordWrapping
+                    label.textAlignment = .center
+                    label.snp.makeConstraints {
+                        $0.left.equalToSuperview().offset(12)
+                        $0.width.equalToSuperview().inset(12)
+                        $0.height.equalTo(60)
+                        $0.top.equalToSuperview().offset(12)
+                    }
+                }
+                
+                var iconViews = [UIImageView]()
+                for i in stride(from: 0, to: 5, by: 1) {
+                    _ = dialog.add(UIImageView()) { (icon) in
+                        iconViews.append(icon)
+                        icon.isUserInteractionEnabled = true
+                        if currentMood + 2 == i {
+                            icon.image = UIImage(named: "Mood\(i)")
+                        } else {
+                            icon.image = UIImage(named: "MoodN\(i)")
+                        }
+                        icon.tag = i
+                        icon.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onMoodIconTapped)))
+                        icon.snp.makeConstraints {
+                            if i > 0 {
+                                $0.left.equalTo(label.snp.right).multipliedBy(Double(i) * 0.2).offset(12)
+                            } else {
+                                $0.left.equalToSuperview().offset(12)
+                            }
+                            $0.top.equalTo(label.snp.bottom)
+                            $0.width.equalToSuperview().dividedBy(5).offset(-12)
+                            $0.height.equalTo(dialog.snp.width).dividedBy(5).offset(-12)
+                        }
+                    }
+                }
+                
+                _ = dialog.add(UIButton()) { (button) in
+                    button.addTarget(self, action: #selector(onMoodSubmitClicked), for: .touchUpInside)
+                    button.setTitle("Submit", for: .normal)
+                    button.setTitleColor(UIColor.white, for: .normal)
+                    button.backgroundColor = UIColor(rgb: 0x009cff)
+                    button.snp.makeConstraints {
+                        $0.top.equalTo(iconViews[0].snp.bottom).offset(12)
+                        $0.centerX.equalToSuperview()
+                        $0.width.equalTo(140)
+                        $0.height.equalTo(48)
+                    }
+                }
+            }
+        }
+        
+        
+        
+    }
+    
+    @objc func onMoodSubmitClicked() {
+        moodView.isHidden = true
+        self.onMoodAcquired()
+    }
+    
+    @objc func onMoodIconTapped(sender: UITapGestureRecognizer) {
+        if let view = sender.view as? UIImageView {
+            for subview in view.superview!.subviews
+            {
+                if let item = subview as? UIImageView
+                {
+                    item.image = UIImage(named: "MoodN\(item.tag)")
+                }
+            }
+            view.image = UIImage(named: "Mood\(view.tag)")
+            self.currentMood = view.tag - 2
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -149,7 +243,6 @@ class MainViewController: UIViewController {
                 "- BASS PH Team")
             defaults.set(true, forKey: "startingMessage0")
         }
-        
     }
     
     @objc func onStartTestButtonClicked(button: UIButton) {
@@ -220,9 +313,19 @@ class MainViewController: UIViewController {
         self.navigationController?.pushViewController(ReportMapViewController(), animated: true)
     }
     
+    var currentResult: BandwidthTestResult!
+    
     func onTestFinished(_ result: BandwidthTestResult) {
-        let generated = ResultHandler.generateMapped(with: result)
-        
+        self.currentResult = result
+        self.moodView.isHidden = false
+    }
+    
+    func onMoodAcquired() {
+        onUploadResult(self.currentResult, self.currentMood)
+    }
+    
+    func onUploadResult(_ result: BandwidthTestResult, _ mood: Int) {
+        let generated = ResultHandler.generateMapped(with: result, andMood: mood)
         JustHUD.shared.showInView(view: self.view, withHeader: "Uploading Results", andFooter: "Please wait...")
         ResultHandler
             .uploadMappedResult(generated)

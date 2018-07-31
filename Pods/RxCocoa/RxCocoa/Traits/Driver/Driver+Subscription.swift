@@ -6,9 +6,7 @@
 //  Copyright © 2015 Krunoslav Zaher. All rights reserved.
 //
 
-#if !RX_NO_MODULE
 import RxSwift
-#endif
 
 private let errorMessage = "`drive*` family of methods can be only called from `MainThread`.\n" +
 "This is required to ensure that the last replayed `Driver` element is delivered on `MainThread`.\n"
@@ -43,16 +41,16 @@ extension SharedSequenceConvertibleType where SharingStrategy == DriverSharingSt
     }
 
     /**
-    Creates new subscription and sends elements to variable.
+    Creates new subscription and sends elements to `BehaviorRelay`.
     This method can be only called from `MainThread`.
 
     - parameter variable: Target variable for sequence elements.
     - returns: Disposable object that can be used to unsubscribe the observer from the variable.
     */
-    public func drive(_ variable: Variable<E>) -> Disposable {
+    public func drive(_ relay: BehaviorRelay<E>) -> Disposable {
         MainScheduler.ensureExecutingOnScheduler(errorMessage: errorMessage)
         return drive(onNext: { e in
-            variable.value = e
+            relay.accept(e)
         })
     }
 
@@ -63,10 +61,10 @@ extension SharedSequenceConvertibleType where SharingStrategy == DriverSharingSt
      - parameter variable: Target variable for sequence elements.
      - returns: Disposable object that can be used to unsubscribe the observer from the variable.
      */
-    public func drive(_ variable: Variable<E?>) -> Disposable {
+    public func drive(_ relay: BehaviorRelay<E?>) -> Disposable {
         MainScheduler.ensureExecutingOnScheduler(errorMessage: errorMessage)
         return drive(onNext: { e in
-            variable.value = e
+            relay.accept(e)
         })
     }
 

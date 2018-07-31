@@ -15,7 +15,7 @@ import SwiftyJSON
 
 class ResultHandler {
     
-    static func generateMapped(with result: BandwidthTestResult) -> [String : Any] {
+    static func generateMapped(with result: BandwidthTestResult, andMood mood: Int) -> [String : Any] {
         let defaults = UserDefaults.standard
         var deviceId = defaults.string(forKey: "deviceId")
         if deviceId == nil || deviceId == "" {
@@ -98,7 +98,8 @@ class ResultHandler {
             "connectivity": connectivity,
             "testData": testData,
             "imei": "none",
-            "version": appVersion
+            "version": appVersion,
+            "mood": mood
         ]
         
         return parameters
